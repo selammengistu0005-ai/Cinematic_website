@@ -5,23 +5,29 @@
 (function () {
 
   /* ── DOM refs ── */
-  const loader        = document.getElementById('loader');
-  const loaderFill    = document.getElementById('loaderBarFill');
-  const loaderLabel   = document.getElementById('loaderLabel');
-  const scenes        = Array.from(document.querySelectorAll('.scene'));
-  const cta           = document.getElementById('cta');
-  const scrollHint    = document.getElementById('scroll-hint');
-  const imageUrls     = scenes.map(s => {
+  const loader      = document.getElementById('loader');
+  const loaderFill  = document.getElementById('loaderBarFill');
+  const loaderLabel = document.getElementById('loaderLabel');
+  const scenes      = Array.from(document.querySelectorAll('.scene'));
+  const cta         = document.getElementById('cta');
+  const scrollHint  = document.getElementById('scroll-hint');
+  const imageUrls   = scenes.map(s => {
     const bg = s.querySelector('.scene-image').style.backgroundImage;
     return bg.slice(5, -2);
   });
 
   /* ── State ── */
-  let current       = 0;
+  let current        = 0;
   let isTransitioning = false;
-  let loadedCount   = 0;
-  let totalImages   = imageUrls.length;
+  let loadedCount    = 0;
+  const totalImages  = imageUrls.length;
   let journeyStarted = false;
+
+  /* ── Wheel: one-scroll-one-scene gate ── */
+  let wheelLocked    = false;
+  let wheelAccum     = 0;
+  let wheelTimer     = null;
+  const WHEEL_THRESHOLD = 20;
 
   /* ════════════════════════════════════
      1. IMAGE PRELOADER
@@ -50,9 +56,7 @@
         const progress = loadedCount / totalImages;
         loaderFill.style.width = (progress * 100) + '%';
         loaderLabel.textContent = getLabel(progress);
-        if (loadedCount === totalImages) {
-          onAllLoaded();
-        }
+        if (loadedCount === totalImages) onAllLoaded();
       };
       img.src = url;
     });
@@ -88,7 +92,7 @@
 
     isTransitioning = true;
 
-    /* hide scroll hint after first move */
+    /* hide scroll hint on first move */
     if (scrollHint.classList.contains('visible')) {
       scrollHint.classList.remove('visible');
       scrollHint.classList.add('hidden');
@@ -106,52 +110,58 @@
       setTimeout(() => {
         scenes[current].classList.add('active');
         isTransitioning = false;
-      }, 800);
+      }, 300);
       return;
     }
 
     const outgoing = scenes[current];
     const incoming = scenes[next];
 
-    /* 1. mark outgoing as leaving → text fades out fast */
+    /* 1. text exits immediately */
     outgoing.classList.add('leaving');
 
-    /* 2. prime incoming (blur, scale reset) */
+    /* 2. prime incoming */
     incoming.classList.add('entering');
     incoming.style.visibility = 'visible';
 
-    /* 3. after text has left (~400ms), crossfade images */
+    /* 3. crossfade starts after short pause */
     setTimeout(() => {
       outgoing.classList.remove('active');
       incoming.classList.add('active');
 
-      /* 4. after crossfade begins, clear leaving state */
+      /* 4. update current index early */
+      current = next;
+
+      /* 5. unlock transition — but keep wheelLocked until
+            the user physically lifts and re-scrolls */
+      setTimeout(() => {
+        isTransitioning = false;
+      }, 250);
+
+      /* 6. clean up outgoing */
       setTimeout(() => {
         outgoing.classList.remove('leaving');
         outgoing.style.visibility = '';
+      }, 400);
 
-        /* 5. clear entering so zoom resets for re-entry */
-        setTimeout(() => {
-          incoming.classList.remove('entering');
-          current = next;
-          isTransitioning = false;
-        }, 1200);
+      /* 7. clean up entering */
+      setTimeout(() => {
+        incoming.classList.remove('entering');
+      }, 900);
 
-      }, 600);
-    }, 420);
+    }, 150);
   }
 
   function goBack() {
     if (isTransitioning) return;
 
     if (isCta()) {
-      /* from CTA back to scene 9 */
       isTransitioning = true;
       cta.classList.remove('active');
       setTimeout(() => {
         scenes[current].classList.add('active');
         isTransitioning = false;
-      }, 900);
+      }, 300);
       return;
     }
 
@@ -172,57 +182,86 @@
       cta.classList.add('active');
 
       setTimeout(() => {
+        isTransitioning = false;
+      }, 300);
+
+      setTimeout(() => {
         outgoing.classList.remove('leaving');
         outgoing.style.visibility = '';
-        isTransitioning = false;
-      }, 1400);
-    }, 420);
+      }, 400);
+
+    }, 150);
   }
 
   /* ════════════════════════════════════
      4. INPUT — WHEEL (desktop)
+     One scroll gesture = one scene.
+     wheelLocked stays true until the
+     user's scroll momentum fully stops,
+     then resets — requiring a fresh
+     deliberate scroll for the next scene.
   ════════════════════════════════════ */
-  let wheelAccum  = 0;
-  let wheelTimer  = null;
-  const WHEEL_THRESHOLD = 60;
-
   window.addEventListener('wheel', (e) => {
     e.preventDefault();
     if (!journeyStarted) return;
+
+    /* if locked, keep draining the timer but don't accumulate */
+    if (wheelLocked) {
+      clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(() => {
+        wheelLocked = false;
+        wheelAccum  = 0;
+      }, 400);
+      return;
+    }
 
     wheelAccum += e.deltaY;
     clearTimeout(wheelTimer);
 
     if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
       const dir = wheelAccum > 0 ? 1 : -1;
-      wheelAccum = 0;
+
+      /* lock immediately so continued momentum is ignored */
+      wheelLocked = true;
+      wheelAccum  = 0;
+
       if (dir > 0) goTo(isCta() ? scenes.length : current + 1);
       else         goBack();
+
+      /* unlock only after scroll momentum has fully died */
+      wheelTimer = setTimeout(() => {
+        wheelLocked = false;
+      }, 400);
+    } else {
+      /* accumulation window — reset if user pauses */
+      wheelTimer = setTimeout(() => { wheelAccum = 0; }, 200);
     }
 
-    wheelTimer = setTimeout(() => { wheelAccum = 0; }, 300);
   }, { passive: false });
 
   /* ════════════════════════════════════
      5. INPUT — TOUCH (mobile)
+     One swipe gesture = one scene.
   ════════════════════════════════════ */
-  let touchStartY = null;
-  let touchStartX = null;
-  const SWIPE_THRESHOLD = 50;
+  let touchStartY  = null;
+  let touchStartX  = null;
+  let touchHandled = false;
+  const SWIPE_THRESHOLD = 40;
 
   window.addEventListener('touchstart', (e) => {
-    touchStartY = e.touches[0].clientY;
-    touchStartX = e.touches[0].clientX;
+    touchStartY  = e.touches[0].clientY;
+    touchStartX  = e.touches[0].clientX;
+    touchHandled = false;
   }, { passive: true });
 
   window.addEventListener('touchend', (e) => {
-    if (touchStartY === null || !journeyStarted) return;
+    if (touchStartY === null || !journeyStarted || touchHandled) return;
 
     const dy = touchStartY - e.changedTouches[0].clientY;
     const dx = touchStartX - e.changedTouches[0].clientX;
 
-    /* only act on predominantly vertical swipes */
     if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > SWIPE_THRESHOLD) {
+      touchHandled = true;
       if (dy > 0) goTo(isCta() ? scenes.length : current + 1);
       else        goBack();
     }
