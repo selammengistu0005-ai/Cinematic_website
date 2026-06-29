@@ -22,6 +22,8 @@
   let loadedCount    = 0;
   const totalImages  = imageUrls.length;
   let journeyStarted = false;
+  let autoAdvanceTimer = null;
+  const AUTO_ADVANCE_DELAY = 8000;
 
   /* ── Wheel: one-scroll-one-scene gate ── */
   let wheelLocked    = false;
@@ -81,6 +83,15 @@
     setTimeout(() => {
       scrollHint.classList.add('visible');
     }, 1800);
+    startAutoAdvance();
+  }
+
+  function startAutoAdvance() {
+    clearTimeout(autoAdvanceTimer);
+    if (isCta() || current >= scenes.length - 1) return;
+    autoAdvanceTimer = setTimeout(() => {
+      goTo(current + 1);
+    }, AUTO_ADVANCE_DELAY);
   }
 
   /* ════════════════════════════════════
@@ -88,6 +99,7 @@
   ════════════════════════════════════ */
   function goTo(next) {
     if (isTransitioning) return;
+    clearTimeout(autoAdvanceTimer);
     if (next === current && !isCta()) return;
 
     isTransitioning = true;
@@ -131,6 +143,7 @@
 
       /* 4. update current index early */
       current = next;
+      startAutoAdvance();
 
       /* 5. unlock transition — but keep wheelLocked until
             the user physically lifts and re-scrolls */
