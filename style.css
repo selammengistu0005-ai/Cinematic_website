@@ -1,1 +1,416 @@
+/* ═══════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0a0806;
+  cursor: default;
+}
+
+/* ═══════════════════════════════════════
+   LOADER
+═══════════════════════════════════════ */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #0a0806;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1.2s ease, visibility 1.2s ease;
+}
+
+#loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.loader-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  color: #e8d5b0;
+  letter-spacing: 0.35em;
+  text-indent: 0.35em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: loaderFadeIn 1.2s ease forwards 0.3s;
+}
+
+.loader-bar-track {
+  width: clamp(10rem, 30vw, 17.5rem);
+  height: 0.0625rem;
+  background: rgba(232, 213, 176, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #c9a96e, #e8d5b0);
+  transition: width 0.4s ease;
+}
+
+.loader-label {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  font-size: clamp(0.6rem, 1.5vw, 0.72rem);
+  color: rgba(232, 213, 176, 0.45);
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: loaderFadeIn 1.2s ease forwards 0.6s;
+}
+
+@keyframes loaderFadeIn {
+  from { opacity: 0; transform: translateY(0.375rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════
+   EXPERIENCE WRAPPER
+═══════════════════════════════════════ */
+#experience {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ═══════════════════════════════════════
+   SCENES
+═══════════════════════════════════════ */
+#scenes {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.35s ease-in,
+    visibility 0.35s ease-in;
+}
+
+.scene.active {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.25s ease-out,
+    visibility 0.25s ease-out;
+}
+
+/* ── Image layer (zoom lives here) ── */
+.scene-image {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1);
+  filter: blur(0px);
+  transition:
+    transform 8s ease-out,
+    filter 0.25s ease-in;
+  will-change: transform, filter;
+}
+
+.scene.active .scene-image {
+  transform: scale(1.08);
+}
+
+.scene.leaving .scene-image {
+  filter: blur(6px);
+}
+
+.scene.entering .scene-image {
+  filter: blur(4px);
+  transform: scale(1);
+}
+
+.scene.entering.active .scene-image {
+  filter: blur(0px);
+  transform: scale(1.08);
+}
+
+/* ── Warm gradient vignette ── */
+.scene-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(10, 6, 3, 0.78) 0%,
+      rgba(10, 6, 3, 0.35) 40%,
+      rgba(10, 6, 3, 0.08) 70%,
+      rgba(10, 6, 3, 0.0) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(10, 6, 3, 0.25) 0%,
+      rgba(10, 6, 3, 0.0) 20%
+    );
+}
+
+/* ── Text block ── */
+.scene-text {
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  text-align: center;
+  width: 90%;
+  max-width: 45rem;
+  opacity: 0;
+  transform: translateX(-50%) translateY(0.875rem);
+  transition:
+    opacity 0.35s ease 0.2s,
+    transform 0.35s ease 0.2s;
+}
+
+.scene.active .scene-text {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.scene.leaving .scene-text {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-0.625rem);
+  transition:
+    opacity 0.2s ease 0s,
+    transform 0.2s ease 0s;
+}
+
+.scene-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(2rem, 5.5vw, 4rem);
+  color: #f0e2c4;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 0.125rem 1.5rem rgba(10, 6, 3, 0.5);
+}
+
+.scene-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  font-size: clamp(0.65rem, 1.6vw, 0.85rem);
+  color: rgba(224, 200, 158, 0.75);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-shadow: 0 0.0625rem 0.75rem rgba(10, 6, 3, 0.6);
+}
+
+/* ═══════════════════════════════════════
+   CTA SCREEN
+═══════════════════════════════════════ */
+#cta {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #0a0806;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.5s ease-out,
+    visibility 0.5s ease-out;
+}
+
+#cta.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cta-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 1s ease 0.6s,
+    transform 1s ease 0.6s;
+}
+
+#cta.active .cta-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cta-eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  font-size: clamp(0.6rem, 1.4vw, 0.72rem);
+  color: rgba(201, 169, 110, 0.6);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+.cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
+  color: #f0e2c4;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+
+.cta-body {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+  color: rgba(224, 200, 158, 0.55);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.cta-button {
+  display: inline-block;
+  margin-top: 0.6rem;
+  padding: 1rem 2.8rem;
+  border: 0.0625rem solid rgba(201, 169, 110, 0.45);
+  color: #e8d5b0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.62rem, 1.4vw, 0.75rem);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    background 0.4s ease,
+    border-color 0.4s ease,
+    color 0.4s ease;
+}
+
+.cta-button:hover {
+  background: rgba(201, 169, 110, 0.12);
+  border-color: rgba(201, 169, 110, 0.8);
+  color: #f5e8cc;
+}
+
+/* ═══════════════════════════════════════
+   SCROLL HINT
+═══════════════════════════════════════ */
+#scroll-hint {
+  position: fixed;
+  bottom: 3.5%;
+  right: 4%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#scroll-hint.visible {
+  opacity: 1;
+}
+
+#scroll-hint.hidden {
+  opacity: 0;
+}
+
+.scroll-hint-line {
+  width: 0.0625rem;
+  height: 2.5rem;
+  background: linear-gradient(to bottom, transparent, rgba(201, 169, 110, 0.6));
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+.scroll-hint-label {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  font-size: 0.58rem;
+  color: rgba(201, 169, 110, 0.5);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; transform: scaleY(1); }
+  50%       { opacity: 1;   transform: scaleY(1.1); }
+}
+
+/* ═══════════════════════════════════════
+   REDUCED MOTION
+═══════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .scene,
+  .scene-image,
+  .scene-text,
+  #cta,
+  .cta-inner {
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+  .scene-image {
+    animation: none;
+    transform: scale(1.04) !important;
+  }
+}
+
+/* ═══════════════════════════════════════
+   MOBILE
+═══════════════════════════════════════ */
+@media (max-width: 48rem) {
+  .loader-logo {
+    text-align: center;
+    text-indent: 0.35em;
+  }
+
+  .scene-text {
+    bottom: 14%;
+    width: 88%;
+  }
+
+  .cta-button {
+    padding: 0.9rem 2.2rem;
+  }
+
+  .scroll-hint-label {
+    display: none;
+  }
+
+  .scroll-hint-line {
+    height: 1.75rem;
+  }
+}
