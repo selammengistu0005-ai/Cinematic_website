@@ -1,0 +1,613 @@
+/* =========================================================
+   IRON FORGE — GYM SITE STYLES
+   Unit strategy:
+   - rem  → font sizes, spacing, radii (scales with root font-size,
+            respects user/browser zoom & accessibility settings)
+   - em   → spacing that should scale relative to a component's
+            own font-size (e.g. button padding)
+   - %    → widths/heights relative to parent (grids, containers)
+   - vh/vw→ viewport-relative sizing (hero section height)
+   - px   → ONLY for things that must stay a fixed, crisp physical
+            size regardless of text scaling: hairline borders,
+            box-shadow/blur offsets, small decorative dots/lines,
+            and breakpoint values (explained inline below)
+   ========================================================= */
+
+:root {
+  /* assumes browser default root font-size: 16px → 1rem = 16px */
+  --bg: #0b0b0c;
+  --bg-alt: #131315;
+  --surface: #1a1a1d;
+  --border: #2a2a2d;
+  --text: #f5f5f7;
+  --text-muted: #a0a0a6;
+  --accent: #a855f7;
+  --accent-soft: rgba(168, 85, 247, 0.35);
+  --gradient-from: rgba(168, 85, 247, 0.35);
+  --gradient-to: rgba(180, 151, 207, 0.25);
+  --radius: 0.875rem;       /* ~14px */
+  --container-w: 75rem;     /* ~1200px */
+  --transition: 0.3s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body.dark {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', 'Segoe UI', Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-w);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section { padding: 6.25rem 0; position: relative; z-index: 1; }
+
+h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; }
+h2 { font-size: clamp(2rem, 4vw, 2.75rem); margin-bottom: 1rem; }
+h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+p { color: var(--text-muted); }
+
+.section-tag {
+  display: inline-block;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.125rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  padding: 0.875em 1.75em;   /* em: scales with the button's own font-size */
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition);
+  cursor: pointer;
+  border: 0.125rem solid transparent;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #7c3aed);
+  color: #fff;
+  box-shadow: 0 0 1.25rem var(--accent-soft);
+}
+.btn-primary:hover {
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0 1.875rem var(--accent-soft);
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+/* =========================================================
+   HEADER / NAV
+   ========================================================= */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(11, 11, 12, 0.75);
+  backdrop-filter: blur(0.75rem);
+  border-bottom: 1px solid var(--border); /* px: hairline border must stay 1 physical pixel */
+}
+
+.navbar {
+  max-width: var(--container-w);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.125rem 1.5rem;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: 0.0625rem;
+}
+.logo span { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: var(--transition);
+}
+.nav-links a:hover { color: var(--text); }
+
+.nav-cta { padding: 0.625em 1.375em; }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 0.3125rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.nav-toggle span {
+  width: 1.5rem;
+  height: 1px; /* px: a hamburger line must stay exactly 1 hairline thick */
+  background: var(--text);
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 5.625rem;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: 3.75rem;
+}
+
+.hero-text h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  margin-bottom: 1.5rem;
+}
+.hero-text .highlight {
+  background: linear-gradient(90deg, var(--accent), #f5f5f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  max-width: 30rem;
+  margin-bottom: 2rem;
+}
+
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.hero-card {
+  display: flex;
+  justify-content: center;
+}
+
+/* =========================================================
+   DOT FIELD CONTAINER (from DotField.css)
+   ========================================================= */
+.dot-field-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* =========================================================
+   CARD 1 — Stat Card (glowing)
+   Note: this card's internal geometry (the radial-gradient
+   "spotlight" radius, the orbiting dot's travel path, and the
+   ray) is tuned to a fixed visual size, so px is used for the
+   gradient/keyframe math to keep the glow and dot path precise
+   regardless of the card's rem-based outer size.
+   ========================================================= */
+.outer {
+  width: 18.75rem;   /* ~300px */
+  height: 15.625rem; /* ~250px */
+  border-radius: 0.625rem;
+  padding: 1px; /* px: 1 physical pixel "border" gap, anything bigger breaks the look */
+  background: radial-gradient(circle 230px at 0% 0%, #ffffff, #0c0d0d);
+  position: relative;
+}
+.dot {
+  width: 0.3125rem; /* ~5px */
+  aspect-ratio: 1;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 0 0.625rem #ffffff;
+  border-radius: 100px; /* px: arbitrary "large enough to be a circle" value, not a real measurement */
+  z-index: 2;
+  right: 10%;
+  top: 10%;
+  animation: moveDot 6s linear infinite;
+}
+@keyframes moveDot {
+  /* px kept here: the dot travels relative to the card's fixed
+     300px/250px box, so its path must be defined in the same
+     unit as that box to land in the corners precisely */
+  0%, 100% { top: 10%; right: 10%; }
+  25%  { top: 10%; right: calc(100% - 35px); }
+  50%  { top: calc(100% - 30px); right: calc(100% - 35px); }
+  75%  { top: calc(100% - 30px); right: 10%; }
+}
+.outer .card {
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5625rem;
+  border: solid 1px #202222; /* px: hairline border */
+  background-size: 1.25rem 1.25rem;
+  background: radial-gradient(circle 280px at 0% 0%, #444444, #0c0d0d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-direction: column;
+  color: #fff;
+}
+.outer .ray {
+  width: 13.75rem;  /* ~220px */
+  height: 2.8125rem; /* ~45px */
+  border-radius: 100px; /* px: decorative pill shape, not a true measurement */
+  position: absolute;
+  background-color: #c7c7c7;
+  opacity: 0.4;
+  box-shadow: 0 0 3.125rem #fff;
+  filter: blur(0.625rem);
+  transform-origin: 10%;
+  top: 0%;
+  left: 0;
+  transform: rotate(40deg);
+}
+.outer .card .text {
+  font-weight: bolder;
+  font-size: 4rem;
+  background: linear-gradient(45deg, #000000 4%, #fff, #000);
+  background-clip: text;
+  color: transparent;
+}
+.outer .line {
+  width: 100%;
+  height: 1px; /* px: hairline divider must stay exactly 1 physical pixel */
+  position: absolute;
+  background-color: #2c2c2c;
+}
+.outer .topl {
+  top: 10%;
+  background: linear-gradient(90deg, #888888 30%, #1d1f1f 70%);
+}
+.outer .bottoml { bottom: 10%; }
+.outer .leftl {
+  left: 10%;
+  width: 1px; /* px: hairline */
+  height: 100%;
+  background: linear-gradient(180deg, #747474 30%, #222424 70%);
+}
+.outer .rightl {
+  right: 10%;
+  width: 1px; /* px: hairline */
+  height: 100%;
+}
+
+/* =========================================================
+   ABOUT
+   ========================================================= */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.75rem;
+  align-items: center;
+}
+.about-points {
+  list-style: none;
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+}
+.about-points li {
+  padding-left: 1.75rem;
+  position: relative;
+  color: var(--text);
+}
+.about-points li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+.about-media {
+  height: 23.75rem;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border); /* px: hairline */
+}
+
+/* =========================================================
+   CLASSES
+   ========================================================= */
+.classes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+.class-item {
+  background: var(--surface);
+  border: 1px solid var(--border); /* px: hairline */
+  border-radius: var(--radius);
+  padding: 2rem 1.5rem;
+  transition: var(--transition);
+}
+.class-item:hover {
+  border-color: var(--accent);
+  transform: translateY(-0.25rem);
+}
+
+/* =========================================================
+   GALLERY — BounceCards (Card 2)
+   Note: the fan-out transforms below use px for the translate
+   offsets because the JS (GSAP) animates these exact string
+   values — they must match the px math in script.js so the
+   hover-push and entrance animation calculate offsets correctly.
+   ========================================================= */
+.gallery { text-align: center; }
+
+.bounceCardsContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 43.75rem;
+  height: 25rem;
+  margin: 3rem auto 0;
+}
+
+.bounceCardsContainer > .card {
+  position: absolute;
+  width: 12.5rem;
+  aspect-ratio: 1;
+  border: 0.3125rem solid #fff;
+  border-radius: 1.5625rem;
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
+  background: var(--surface);
+}
+
+.bounceCardsContainer .card .image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* px required: matches transformStyles offsets driven by script.js */
+.gallery-bounce .card-0 { transform: rotate(5deg) translate(-150px); }
+.gallery-bounce .card-1 { transform: rotate(0deg) translate(-70px); }
+.gallery-bounce .card-2 { transform: rotate(-5deg); }
+.gallery-bounce .card-3 { transform: rotate(5deg) translate(70px); }
+.gallery-bounce .card-4 { transform: rotate(-5deg) translate(150px); }
+
+/* =========================================================
+   PRICING
+   ========================================================= */
+.pricing { text-align: center; }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+  text-align: left;
+}
+.price-card {
+  background: var(--surface);
+  border: 1px solid var(--border); /* px: hairline */
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  transition: var(--transition);
+}
+.price-card.featured {
+  border-color: var(--accent);
+  box-shadow: 0 0 1.875rem var(--accent-soft);
+  transform: scale(1.03);
+}
+.price-card .price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0.75rem 0 1.5rem;
+  color: var(--text);
+}
+.price-card .price span {
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+.price-card ul {
+  list-style: none;
+  margin-bottom: 2rem;
+  display: grid;
+  gap: 0.625rem;
+  color: var(--text-muted);
+}
+.price-card .btn { width: 100%; text-align: center; }
+
+/* =========================================================
+   TRAINERS
+   ========================================================= */
+.trainers { text-align: center; }
+.trainers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+.trainer-card {
+  background: var(--surface);
+  border: 1px solid var(--border); /* px: hairline */
+  border-radius: var(--radius);
+  padding: 2rem;
+  text-align: center;
+}
+.trainer-photo {
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: 50%;
+  background: var(--bg-alt);
+  border: 1px solid var(--border); /* px: hairline */
+  margin: 0 auto 1.25rem;
+}
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.75rem;
+}
+.contact-details {
+  list-style: none;
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+  color: var(--text-muted);
+}
+.contact-form {
+  display: grid;
+  gap: 1rem;
+}
+.contact-form input,
+.contact-form textarea {
+  background: var(--surface);
+  border: 1px solid var(--border); /* px: hairline */
+  border-radius: 0.625rem;
+  padding: 0.875rem 1.125rem;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: none;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.contact-form button { justify-self: start; }
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.site-footer {
+  background: var(--bg-alt);
+  border-top: 1px solid var(--border); /* px: hairline */
+  padding-top: 4rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.footer-brand p { margin-top: 0.75rem; max-width: 17.5rem; }
+.footer-links h4,
+.footer-social h4 {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+.footer-links ul,
+.footer-social ul {
+  list-style: none;
+  display: grid;
+  gap: 0.625rem;
+}
+.footer-links a,
+.footer-social a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: var(--transition);
+}
+.footer-links a:hover,
+.footer-social a:hover { color: var(--accent); }
+
+.footer-bottom {
+  border-top: 1px solid var(--border); /* px: hairline */
+  text-align: center;
+  padding: 1.25rem 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* =========================================================
+   RESPONSIVE
+   Note: media query breakpoints are kept in px (not em/rem).
+   This is intentional and the one widely-accepted exception:
+   breakpoints describe physical viewport width, not text size,
+   and px breakpoints behave consistently across browsers,
+   whereas em-based breakpoints can shift unexpectedly if a
+   browser's default font-size setting differs.
+   ========================================================= */
+@media (max-width: 992px) {
+  .hero-content { grid-template-columns: 1fr; text-align: center; }
+  .hero-actions { justify-content: center; }
+  .about-grid,
+  .contact-grid { grid-template-columns: 1fr; }
+  .classes-grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-grid,
+  .trainers-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-cta { display: none; }
+  .nav-toggle { display: flex; }
+
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--border); /* px: hairline */
+    padding: 1.25rem 1.5rem;
+    gap: 1rem;
+  }
+
+  .nav-toggle.active span:nth-child(1) { transform: translateY(0.4375rem) rotate(45deg); }
+  .nav-toggle.active span:nth-child(2) { opacity: 0; }
+  .nav-toggle.active span:nth-child(3) { transform: translateY(-0.4375rem) rotate(-45deg); }
+
+  .classes-grid { grid-template-columns: 1fr; }
+  .bounceCardsContainer { height: 20rem; }
+  .bounceCardsContainer .card { width: 8.75rem; }
+}
