@@ -392,6 +392,11 @@ html, body {
    MOBILE
 ═══════════════════════════════════════ */
 @media (max-width: 48rem) {
+  .loader-logo {
+    text-align: center;
+    text-indent: 0.35em;
+  }
+
   .scene-text {
     bottom: 14%;
     width: 88%;
