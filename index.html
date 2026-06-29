@@ -1,254 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IRON FORGE — Gym</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Grand Eternal — A Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@200;300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="dark">
+<body>
 
-  <!-- ===== HEADER / NAV ===== -->
-  <header class="site-header">
-    <nav class="navbar">
-      <a href="#home" class="logo">IRON<span>FORGE</span></a>
-      <ul class="nav-links">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#classes">Classes</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#trainers">Trainers</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <a href="#contact" class="btn btn-primary nav-cta">Join Now</a>
-      <button class="nav-toggle" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
-    </nav>
-  </header>
-
-  <!-- ===== HERO / HOME ===== -->
-  <div class="dot-field-container hero-bg">
-    <!-- DotField component mounts here -->
+  <!-- ═══════════════════════════════════════
+       LOADER
+  ═══════════════════════════════════════ -->
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="loader-logo">The Grand Eternal</div>
+      <div class="loader-bar-track">
+        <div class="loader-bar-fill" id="loaderBarFill"></div>
+      </div>
+      <div class="loader-label" id="loaderLabel">Preparing your journey</div>
+    </div>
   </div>
 
-  <section id="home" class="hero">
+  <!-- ═══════════════════════════════════════
+       MAIN EXPERIENCE
+  ═══════════════════════════════════════ -->
+  <main id="experience">
 
-    <div class="hero-content container">
-      <div class="hero-text">
-        <h1>Build Your <span class="highlight">Strength</span>.<br>Forge Your <span class="highlight">Future</span>.</h1>
-        <p class="hero-subtitle">
-          Premium training, expert coaches, and a community that pushes you further than you'd go alone.
-        </p>
-        <div class="hero-actions">
-          <a href="#contact" class="btn btn-primary">Start Free Trial</a>
-          <a href="#classes" class="btn btn-outline">Explore Classes</a>
+    <!-- SCENES (images 1–10) -->
+    <div id="scenes">
+
+      <div class="scene active" data-index="0">
+        <div class="scene-image" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782731354/hotel_image_1_eo6bmv.png')"></div>
+        <div class="scene-gradient"></div>
+        <div class="scene-text">
+          <h1 class="scene-title">Where stillness begins</h1>
+          <p class="scene-subtitle">A sanctuary above the ordinary</p>
         </div>
       </div>
 
-      <!-- Card 1 (stat card) placed alongside text -->
-      <div class="hero-card">
-        <div class="outer">
-          <div class="dot"></div>
-          <div class="card">
-            <div class="ray"></div>
-            <div class="text">750k</div>
-            <div>Calories Burned</div>
-            <div class="line topl"></div>
-            <div class="line leftl"></div>
-            <div class="line bottoml"></div>
-            <div class="line rightl"></div>
-          </div>
+      <div class="scene" data-index="1">
+        <div class="scene-image" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782731342/hotel_image_2_pszrjp.png')"></div>
+        <div class="scene-gradient"></div>
+        <div class="scene-text">
+          <h1 class="scene-title">Light finds every corner</h1>
+          <p class="scene-subtitle">Crafted for those who notice</p>
         </div>
+      </div>
+
+      <div class="scene" data-index="2">
+        <div class="scene-image" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782731346/hotel_image_3_p8bfuq.png')"></div>
+        <div class="scene-gradient"></div>
+        <div class="scene-text">
+          <h1 class="scene-title">The art of arrival</h1>
+          <p class="scene-subtitle">Every detail, considered</p>
+        </div>
+      </div>
+
+      <div class="scene" data-index="3">
+        <div class="scene-image" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782731268/hotel_image_4_yfxdew.png')"></div>
+        <div class="scene-gradient"></div>
+        <div class="scene-text">
+          <h1 class="scene-title">Rest, redefined</h1>
+          <p class="scene-subtitle">Sleep as you've never slept before</p>
+        </div>
+      </div>
+
+      <div class="scene" data-index="4">
+        <div class="scene-image" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782731308/hotel_image_5_qccw2t.png')"></div>
+        <div class="scene-gradient"></div>
+        <div class="scene-text">
+          <h1 class="scene-title">A table set for wonder</h1>
+          <p class="scene-subtitle">Flavors drawn from the earth</p>
+        </div>
+      </div>
+
+      <div class="scene" data-index="5">
+        <div class="scene-image" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782731241/hotel_image_6_irnaj9.png')"></div>
+        <div class="scene-gradient"></div>
+        <div class="scene-text">
+          <h1 class="scene-title">The hour before sunset</h1>
+          <p class="scene-subtitle">When time slows to a golden pace</p>
+        </div>
+      </div>
+
+      <div class="scene" data-index="6">
+        <div class="scene-image" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782731241/hotel_image_7_zxytsh.png')"></div>
+        <div class="scene-gradient"></div>
+        <div class="scene-text">
+          <h1 class="scene-title">Space to simply be</h1>
+          <p class="scene-subtitle">Luxury in its quietest form</p>
+        </div>
+      </div>
+
+      <div class="scene" data-index="7">
+        <div class="scene-image" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782731265/hotel_image_8_okszia.png')"></div>
+        <div class="scene-gradient"></div>
+        <div class="scene-text">
+          <h1 class="scene-title">Water, warmth, silence</h1>
+          <p class="scene-subtitle">The body finds its way home</p>
+        </div>
+      </div>
+
+      <div class="scene" data-index="8">
+        <div class="scene-image" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782731225/hotel_image_9_q0jmu7.png')"></div>
+        <div class="scene-gradient"></div>
+        <div class="scene-text">
+          <h1 class="scene-title">Morning, unhurried</h1>
+          <p class="scene-subtitle">Begin the day on your own terms</p>
+        </div>
+      </div>
+
+      <div class="scene" data-index="9">
+        <div class="scene-image" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782731243/hotel_image_10_m13ntu.png')"></div>
+        <div class="scene-gradient"></div>
+        <div class="scene-text">
+          <h1 class="scene-title">You've arrived</h1>
+          <p class="scene-subtitle">This is where you were always meant to be</p>
+        </div>
+      </div>
+
+    </div>
+    <!-- /scenes -->
+
+    <!-- CTA SCREEN -->
+    <div id="cta">
+      <div class="cta-inner">
+        <p class="cta-eyebrow">The Grand Eternal</p>
+        <h2 class="cta-title">Reserve your escape</h2>
+        <p class="cta-body">A few rooms remain. Fewer moments like this.</p>
+        <a href="#" class="cta-button">Begin your reservation</a>
       </div>
     </div>
-  </section>
 
-  <!-- ===== ABOUT ===== -->
-  <section id="about" class="about section">
-    <div class="container about-grid">
-      <div class="about-text">
-        <span class="section-tag">About Us</span>
-        <h2>More Than A Gym.</h2>
-        <p>
-          We're a community built around discipline, growth, and results.
-          Whether you're chasing your first pull-up or your next PR, our space
-          and our people are built to get you there.
-        </p>
-        <ul class="about-points">
-          <li>State-of-the-art equipment</li>
-          <li>Certified personal trainers</li>
-          <li>Flexible class schedules</li>
-          <li>Open 24/7</li>
-        </ul>
-      </div>
-      <div class="about-media">
-        <!-- placeholder for image/video -->
-      </div>
-    </div>
-  </section>
+  </main>
+  <!-- /experience -->
 
-  <!-- ===== CLASSES / SERVICES ===== -->
-  <section id="classes" class="classes section">
-    <div class="container">
-      <span class="section-tag">What We Offer</span>
-      <h2>Our Classes</h2>
+  <!-- SCROLL HINT -->
+  <div id="scroll-hint">
+    <div class="scroll-hint-line"></div>
+    <span class="scroll-hint-label">Scroll</span>
+  </div>
 
-      <div class="classes-grid">
-        <div class="class-item">
-          <h3>Strength Training</h3>
-          <p>Build raw power with progressive overload programs.</p>
-        </div>
-        <div class="class-item">
-          <h3>HIIT</h3>
-          <p>Burn fat and boost endurance with high-intensity sessions.</p>
-        </div>
-        <div class="class-item">
-          <h3>Yoga & Mobility</h3>
-          <p>Recover smarter and move better with guided flexibility work.</p>
-        </div>
-        <div class="class-item">
-          <h3>Boxing</h3>
-          <p>Sharpen reflexes and conditioning with boxing fundamentals.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== GALLERY ===== -->
-  <section id="gallery" class="gallery section">
-    <div class="container">
-      <span class="section-tag">Gallery</span>
-      <h2>Inside The Forge</h2>
-
-      <!-- Card 2 / BounceCards gallery mounts here -->
-      <div class="bounceCardsContainer gallery-bounce">
-        <div class="card card-0"><img class="image" src="" alt="gallery-1"></div>
-        <div class="card card-1"><img class="image" src="" alt="gallery-2"></div>
-        <div class="card card-2"><img class="image" src="" alt="gallery-3"></div>
-        <div class="card card-3"><img class="image" src="" alt="gallery-4"></div>
-        <div class="card card-4"><img class="image" src="" alt="gallery-5"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== PRICING ===== -->
-  <section id="pricing" class="pricing section">
-    <div class="container">
-      <span class="section-tag">Membership</span>
-      <h2>Pricing Plans</h2>
-
-      <div class="pricing-grid">
-        <div class="price-card">
-          <h3>Basic</h3>
-          <p class="price">$0<span>/mo</span></p>
-          <ul>
-            <li>Placeholder feature</li>
-            <li>Placeholder feature</li>
-          </ul>
-          <a href="#contact" class="btn btn-outline">Choose Plan</a>
-        </div>
-        <div class="price-card featured">
-          <h3>Pro</h3>
-          <p class="price">$0<span>/mo</span></p>
-          <ul>
-            <li>Placeholder feature</li>
-            <li>Placeholder feature</li>
-          </ul>
-          <a href="#contact" class="btn btn-primary">Choose Plan</a>
-        </div>
-        <div class="price-card">
-          <h3>Elite</h3>
-          <p class="price">$0<span>/mo</span></p>
-          <ul>
-            <li>Placeholder feature</li>
-            <li>Placeholder feature</li>
-          </ul>
-          <a href="#contact" class="btn btn-outline">Choose Plan</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== TRAINERS ===== -->
-  <section id="trainers" class="trainers section">
-    <div class="container">
-      <span class="section-tag">Our Team</span>
-      <h2>Meet The Trainers</h2>
-
-      <div class="trainers-grid">
-        <div class="trainer-card">
-          <div class="trainer-photo"></div>
-          <h3>Trainer Name</h3>
-          <p>Specialty</p>
-        </div>
-        <div class="trainer-card">
-          <div class="trainer-photo"></div>
-          <h3>Trainer Name</h3>
-          <p>Specialty</p>
-        </div>
-        <div class="trainer-card">
-          <div class="trainer-photo"></div>
-          <h3>Trainer Name</h3>
-          <p>Specialty</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== CONTACT ===== -->
-  <section id="contact" class="contact section">
-    <div class="container contact-grid">
-      <div class="contact-info">
-        <span class="section-tag">Get In Touch</span>
-        <h2>Join Iron Forge Today</h2>
-        <p>Fill out the form or reach us directly — first session is on us.</p>
-        <ul class="contact-details">
-          <li>📍 Address Placeholder</li>
-          <li>📞 Phone Placeholder</li>
-          <li>✉️ Email Placeholder</li>
-        </ul>
-      </div>
-      <form class="contact-form">
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="email" name="email" placeholder="Your Email" required>
-        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-        <button type="submit" class="btn btn-primary">Send Message</button>
-      </form>
-    </div>
-  </section>
-
-  <!-- ===== FOOTER ===== -->
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-brand">
-        <a href="#home" class="logo">IRON<span>FORGE</span></a>
-        <p>Forge your strength. Forge your future.</p>
-      </div>
-      <div class="footer-links">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="#classes">Classes</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li><a href="#pricing">Pricing</a></li>
-        </ul>
-      </div>
-      <div class="footer-social">
-        <h4>Follow Us</h4>
-        <ul>
-          <li><a href="#">Instagram</a></li>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">TikTok</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Iron Forge. All rights reserved.</p>
-    </div>
-  </footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="script.js"></script>
+
 </body>
 </html>
