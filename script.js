@@ -207,11 +207,6 @@
 
     /* if locked, keep draining the timer but don't accumulate */
     if (wheelLocked) {
-      clearTimeout(wheelTimer);
-      wheelTimer = setTimeout(() => {
-        wheelLocked = false;
-        wheelAccum  = 0;
-      }, 400);
       return;
     }
 
@@ -231,7 +226,7 @@
       /* unlock only after scroll momentum has fully died */
       wheelTimer = setTimeout(() => {
         wheelLocked = false;
-      }, 400);
+      }, 100);
     } else {
       /* accumulation window — reset if user pauses */
       wheelTimer = setTimeout(() => { wheelAccum = 0; }, 200);
